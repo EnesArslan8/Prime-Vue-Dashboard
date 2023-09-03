@@ -5,6 +5,7 @@ import Badge from "primevue/badge";
 import BadgeDirective from "primevue/badgedirective";
 import ToggleButton from "primevue/togglebutton";
 import Avatar from "primevue/avatar";
+import AvatarGroup from "primevue/avatargroup";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
 import TabView from "primevue/tabview";
@@ -12,13 +13,23 @@ import TabPanel from "primevue/tabpanel";
 import Splitter from "primevue/splitter";
 import SplitterPanel from "primevue/splitterpanel";
 import Card from "primevue/card";
+import Chart from "primevue/chart";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
+import Tag from "primevue/tag";
+import ConfirmPopup from "primevue/confirmpopup";
+import ProgressBar from "primevue/progressbar";
+import Rating from "primevue/rating";
+import Knob from "primevue/knob";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import Galleria from "primevue/galleria";
+const toast = useToast();
 
 const visible = ref(false);
 const toggle = ref(false);
 const selectedCountry = ref("");
-const selectedCity=ref("")
+const selectedCity = ref("");
 const countries = ref([
   {
     name: "Australia",
@@ -113,11 +124,86 @@ const groupedCities = ref([
       { label: "New York", value: "New York" },
       { label: "San Francisco", value: "San Francisco" },
     ],
-  }
+  },
 ]);
 const generateFlagImageUrl = (code) => {
   return `https://www.worldometers.info/img/flags/${code.toLowerCase()}-flag.gif`;
 };
+const chartData = ref({
+  labels: ["Ebebek", "Turpak", "Koç", "Togg"],
+  datasets: [
+    {
+      label: "Sales",
+      data: [540, 325, 702, 120],
+      backgroundColor: [
+        "rgba(255, 159, 64, 0.2)",
+        "rgba(75, 192, 192, 0.2)",
+        "rgba(54, 162, 235, 0.2)",
+        "rgba(153, 102, 255, 0.2)",
+      ],
+      borderColor: [
+        "rgb(255, 159, 64)",
+        "rgb(75, 192, 192)",
+        "rgb(54, 162, 235)",
+        "rgb(153, 102, 255)",
+      ],
+      borderWidth: 1,
+      width: 200,
+    },
+  ],
+});
+const chartOptions = ref({
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+});
+
+import { useConfirm } from "primevue/useconfirm";
+const confirm = useConfirm();
+const showTemplate = (event) => {
+  confirm.require({
+    target: event.currentTarget,
+    group: "demo",
+    message: "This is a chart. This is shows graph",
+  });
+};
+
+const rating = ref(null);
+
+const knob1 = ref("63");
+const knob2 = ref("71");
+
+const toast1 = () => {
+  toast.add({
+    severity: "success",
+    summary: "Rating",
+    detail: "Thanks for rating",
+    life: 3000,
+  });
+};
+
+const galleriaImg = [
+  {
+    id: 1,
+    url: "https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/new_test.jpeg",
+  },
+  {
+    id: 2,
+    url: "https://www.searchenginejournal.com/wp-content/uploads/2021/11/get-to-know-google-analytics-4_-a-complete-guide-61b06558a2bc6-sej.png",
+  },
+  {
+    id: 3,
+    url: "https://www.searchenginejournal.com/wp-content/uploads/2020/02/10-great-google-analytics-alternatives-5e4175671fa6a.png",
+  },
+  {
+    id: 4,
+    url: "https://thedial.co/wp-content/uploads/2021/11/bitcoin.jpeg",
+  },
+];
+
+
 </script>
 
 <template>
@@ -274,7 +360,7 @@ const generateFlagImageUrl = (code) => {
               />
             </SplitterPanel>
           </Splitter>
-          <div class="selectCountry" style="margin-top: 3rem; ">
+          <div class="selectCountry" style="margin-top: 3rem">
             <Dropdown
               v-model="selectedCountry"
               :options="countries"
@@ -319,7 +405,7 @@ const generateFlagImageUrl = (code) => {
               optionGroupChildren="items"
               placeholder="Mevcut Halka Arzlar"
               class="w-full md:w-14rem"
-              style="width: 45%;margin-left: 5%;"
+              style="width: 45%; margin-left: 5%"
             >
               <template #optiongroup="slotProps">
                 <div
@@ -329,7 +415,7 @@ const generateFlagImageUrl = (code) => {
                   <img
                     :alt="slotProps.option.label"
                     :src="generateFlagImageUrl(slotProps.option.code)"
-                    style="width: 18px ;background-color: #333;"
+                    style="width: 18px; background-color: #333"
                   />
                   <div>{{ slotProps.option.label }}</div>
                 </div>
@@ -368,10 +454,207 @@ const generateFlagImageUrl = (code) => {
         </div>
       </div>
     </div>
+    <div class="graphChart">
+      <div
+        class="graphContainer"
+        style="display: flex; justify-content: space-between"
+      >
+        <div class="barChart" style="width: 60%">
+          <div
+            style="width: 100%; display: flex; justify-content: space-between"
+          >
+            <div class="tag">
+              <Tag icon="pi pi-thumbs-up" class="tag" value="Sevilen"></Tag>
+              <Tag
+                icon="pi pi-check"
+                class="tag"
+                severity="success"
+                value="Onaylanmış"
+              ></Tag>
+              <ConfirmPopup group="demo">
+                <template #message="slotProps">
+                  <div class="flex p-4">
+                    <p class="px-2" style="margin: 0.5rem 1rem">
+                      {{ slotProps.message.message }}
+                    </p>
+                  </div>
+                </template>
+              </ConfirmPopup>
+              <Tag
+                @click="showTemplate($event)"
+                icon="pi pi-info-circle"
+                severity="info"
+                class="tag popup"
+                value="İnfo"
+              ></Tag>
+            </div>
+            <AvatarGroup>
+              <Avatar
+                image="https://imgv3.fotor.com/images/gallery/watercolor-female-avatar.jpg"
+                size="medium"
+                shape="circle"
+              />
+              <Avatar
+                image="https://i.pinimg.com/564x/9d/d4/9a/9dd49a4547b0c21ffaf4ce6046bff3d3.jpg"
+                size="medium"
+                shape="circle"
+              />
+              <Avatar
+                image="https://i.pinimg.com/564x/90/41/57/904157e5187b6af3e742ffb04da1e23d.jpg"
+                size="medium"
+                shape="circle"
+              />
+              <Avatar
+                image="https://i.pinimg.com/236x/de/9c/0c/de9c0c46bc1fd8c11d8294c75497ab66.jpg"
+                size="medium"
+                shape="circle"
+              />
+              <Avatar
+                image="https://i.pinimg.com/236x/f6/f9/06/f6f90621447e1fb951461b6c849ffa07.jpg"
+                size="medium"
+                shape="circle"
+              />
+              <Avatar
+                label="+2"
+                shape="circle"
+                size="medium"
+                style="background-color: '#9c27b0', color: '#ffffff'"
+              />
+            </AvatarGroup>
+          </div>
+          <Chart
+            width="100%"
+            height="auto"
+            type="bar"
+            :data="chartData"
+            :options="chartOptions"
+          />
+          <div
+            style="
+              width: 100%;
+              margin-top: 1rem;
+              display: flex;
+              justify-content: space-between;
+            "
+          >
+            <ProgressBar
+              :pt="{
+                value: {
+                  style: {
+                    background: 'linear-gradient(to right, #8e2de2, #4a00e0)',
+                  },
+                },
+              }"
+              style="width: 60%; height: 17px"
+              :value="71"
+              mode="determinate"
+            ></ProgressBar>
+            <Toast />
+            <Rating
+              @click="toast1"
+              v-model="rating"
+              model-value="4"
+              cancel-icon="false"
+            />
+          </div>
+        </div>
+        <div
+          class="knobs"
+          style="
+            width: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+            "
+          >
+            <h2>Ay Artış Oranı</h2>
+            <Knob size="300px" v-model="knob1" />
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+            "
+          >
+            <h2>Haftalık Artış Oranı</h2>
+            <Knob size="300px" v-model="knob2" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="galleriaSection">
+      <div class="galleriaContainer">
+        <div style="width: 1200px; height: 40%; ">
+          <Galleria
+            show-thumbnail-navigators="false"
+            show-thumbnails="false"
+            :value="galleriaImg"
+            :numVisible="4"
+            style="height: 100%; width: 100%"
+            containerStyle="max-width: 640px"
+          >
+            <template style="width: 600px" #item="slotProps">
+              <img
+                :src="slotProps.item.url"
+                style="width: 600px; height: 450px"
+              />
+            </template>
+            <template #thumbnail="slotProps">
+              <img style="width: 100px" :src="slotProps.item.url" />
+            </template>
+          </Galleria>
+        </div>
+        <div class="doughnutChart" style="width: 40%;">
+          <Chart width="100px" type="doughnut" :data="chartData" :options="chartOptions"  />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.galleriaContainer {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* justify-content: space-around; */
+}
+.galleriaSection {
+  display: flex;
+  margin-top: 7rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.tag.popup {
+  cursor: pointer;
+}
+.tag {
+  margin-right: 0.5rem;
+}
+.graphContainer {
+  width: 90%;
+  display: flex;
+  /* justify-content: space-around; */
+}
+.graphChart {
+  display: flex;
+  margin-top: 5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 .card {
   width: auto;
 }
