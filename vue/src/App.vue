@@ -774,7 +774,7 @@ const submitBtnSucces=()=>{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 25px;
   padding: 4rem 0;
 }
 .formContainer {
@@ -802,6 +802,7 @@ const submitBtnSucces=()=>{
 }
 .orderListContainer {
   position: fixed;
+  filter: drop-shadow(0 5px 20px rgba(0,0,0,.2));
   right: 0;
   bottom: 0;
   /* width: 90%; */
