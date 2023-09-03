@@ -24,10 +24,15 @@ import Knob from "primevue/knob";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import Galleria from "primevue/galleria";
+import OrderList from "primevue/orderlist";
+import Fieldset from "primevue/fieldset";
+import InputText from "primevue/inputtext";
+import Calendar from "primevue/calendar";
+import Textarea from "primevue/textarea";
 const toast = useToast();
 
 const visible = ref(false);
-const toggle = ref(false);
+const toggle = ref(true);
 const selectedCountry = ref("");
 const selectedCity = ref("");
 const countries = ref([
@@ -203,7 +208,53 @@ const galleriaImg = [
   },
 ];
 
+const orderProducts = [
+  {
+    name: "Ebebek",
+    category: "Halka Arz",
+    price: 100,
+  },
+  {
+    name: "Togg",
+    category: "Hisse Senedi",
+    price: 200,
+  },
+  {
+    name: "Koç",
+    category: "Hisse Senedi",
+    price: 800,
+  },
+  {
+    name: "Ford",
+    category: "Hisse Senedi",
+    price: 1800,
+  },
+  {
+    name: "Turpak",
+    category: "Hisse Senedi",
+    price: 50,
+  },
+  {
+    name: "Bay Döner",
+    category: "Halka Arz",
+    price: 100,
+  },
+];
 
+const username = ref("");
+const lastname = ref("");
+const email = ref("");
+const date = ref("");
+const textarea = ref("");
+
+const submitBtnSucces=()=>{
+  toast.add({
+    severity:"success",
+    summary:"Submit",
+    detail:"Your form submited",
+    life:3500
+  })
+}
 </script>
 
 <template>
@@ -594,7 +645,7 @@ const galleriaImg = [
     </div>
     <div class="galleriaSection">
       <div class="galleriaContainer">
-        <div style="width: 1200px; height: 40%; ">
+        <div style="width: 1200px; height: 40%">
           <Galleria
             show-thumbnail-navigators="false"
             show-thumbnails="false"
@@ -614,15 +665,157 @@ const galleriaImg = [
             </template>
           </Galleria>
         </div>
-        <div class="doughnutChart" style="width: 40%;">
-          <Chart width="100px" type="doughnut" :data="chartData" :options="chartOptions"  />
+        <div class="doughnutChart" style="width: 40%">
+          <Chart
+            width="100px"
+            type="doughnut"
+            :data="chartData"
+            :options="chartOptions"
+          />
         </div>
       </div>
+    </div>
+    <div class="orderListSelection">
+      <div class="orderListContainer">
+        <Fieldset
+          legend="Your order history"
+          :toggleable="true"
+          style="width: 565px; height: auto; overflow: auto"
+        >
+          <OrderList
+            :pt="{
+              moveUpButton: { root: { style: 'display:none' } },
+              moveBottomButton: { root: { style: 'display:none' } },
+              moveTopButton: { root: { style: 'display:none' } },
+              moveDownButton: { root: { style: 'display:none' } },
+            }"
+            meta-key-selection="false"
+            style="
+              width: 500px;
+              height: auto;
+              overflow: auto;
+              padding: 0;
+              margin: 0;
+            "
+            v-model="orderProducts"
+            listStyle="height:auto"
+            dataKey="id"
+          >
+            <template #header> Order List </template>
+
+            <template #item="slotProps">
+              <div class="flex flex-wrap p-2 align-items-center gap-3">
+                <div class="flex-1 flex flex-column gap-2">
+                  <span class="font-bold">{{ slotProps.item.name }} </span>
+                  <div class="flex align-items-center gap-2">
+                    <i class="pi pi-tag text-sm"></i>
+                    <span>{{ slotProps.item.category }}</span>
+                  </div>
+                </div>
+                <span class="font-bold text-900"
+                  >₺ {{ slotProps.item.price }}
+                </span>
+              </div>
+            </template>
+          </OrderList>
+        </Fieldset>
+      </div>
+    </div>
+    <div class="formArea">
+      <div class="formContainer">
+        <h1>Form</h1>
+        <div style="display: flex">
+          <span style="margin-right: 2rem" class="p-float-label">
+            <InputText id="username" v-model="username" />
+            <label for="username">Username</label>
+          </span>
+          <span class="p-float-label">
+            <InputText id="lastname" v-model="lastname" />
+            <label for="lastname">Lastname</label>
+          </span>
+        </div>
+        <span style="margin-top: 2rem" class="p-float-label">
+          <InputText
+            style="width: 450px"
+            id="email"
+            type="email"
+            v-model="email"
+          />
+          <label for="email">E-mail</label>
+        </span>
+        <span style="margin-top: 2rem" class="p-float-label">
+          <Calendar
+            date-format="dd-mm-yy"
+            style="width: 450px"
+            v-model="date"
+            showIcon
+          />
+        </span>
+        <span style="margin-top: 2rem" class="p-float-label">
+          <Textarea style="resize: none;" v-model="textarea" rows="6" cols="56" ></Textarea>
+          <label>Content</label>
+        </span>
+        <Toast></Toast>
+        <Button @click="submitBtnSucces" style="width: 27%;margin-top: 2rem;" label="Submit"></Button>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Made by <strong>Enes Arslan</strong></span>
     </div>
   </div>
 </template>
 
 <style scoped>
+.footer{
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  color :#efefef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  padding: 4rem 0;
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: 90%;
+}
+.formArea {
+  display: flex;
+  background-color: #efefef9a;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  padding: 2rem 0;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+.p-fieldset-content {
+  padding: 0 !important;
+}
+.orderListContainer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  /* width: 90%; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.orderListSelection {
+  display: flex;
+  margin-top: 7rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 .galleriaContainer {
   width: 90%;
   display: flex;
@@ -699,6 +892,7 @@ const galleriaImg = [
 .container {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 .header {
   display: flex;
