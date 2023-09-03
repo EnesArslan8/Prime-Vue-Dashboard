@@ -33,8 +33,9 @@ This command will launch the project on a local server and display it in your br
 
 ## Screenshots
 
-<img src='https://github.com/EnesArslan8/Prime-Vue-Dashboard/assets/89355402/6282b363-cf59-42f3-9990-f64d5a18a9d0' alt="gif" width='auto' height='auto' />
-<img src='https://github.com/EnesArslan8/Prime-Vue-Dashboard/assets/89355402/59dc5c60-fa5d-4fc8-bc6f-03c952c9baba' alt="gif" width='auto' height='auto' />
+<img src='https://github.com/EnesArslan8/Prime-Vue-Dashboard/assets/89355402/55006137-e8de-4950-9ea3-30837406f255' alt="gif" width='auto' height='auto' />
+
+<img src='https://github.com/EnesArslan8/Prime-Vue-Dashboard/assets/89355402/2fde4888-94e0-4d19-a296-a5e6bfe0faed' alt="gif" width='auto' height='auto' />
 
 ## Contribution
 
